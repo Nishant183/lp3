@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+
+#Read dataset
+dataset=pd.read_csv("data3.csv")
+X=dataset.iloc[:,:-1].values
+y=dataset.iloc[:,-1].values
+
+#import KNeighborshood Classifier and create object of it
+from sklearn.neighbors import KNeighborsClassifier
+classifier=KNeighborsClassifier(n_neighbors=3)
+classifier.fit(X,y)
+
+#predict the class for the point(6,6) using general KNN
+X_test=np.array([6,6])
+y_pred=classifier.predict([X_test])
+print('General KNN',y_pred)
+
+classifier=KNeighborsClassifier(n_neighbors=3,weights='distance')
+classifier.fit(X,y)
+
+#predict the class for the point(6,6) using weighted KNN
+X_test=np.array([6,6])
+y_pred=classifier.predict([X_test])
+print('Distance Weighted KNN',y_pred)
+
+def average(values):
+	value = np.mean(values)
+	for i in range (0,len(values)):
+		values[i] = value 
+	return values
+
+classifier=KNeighborsClassifier(n_neighbors=3,weights=average)
+classifier.fit(X,y)
+
+#predict the class for the point(6,6) using weighted KNN
+X_test=np.array([6,6])
+y_pred=classifier.predict([X_test])
+print('Average Weighted KNN',y_pred)	
